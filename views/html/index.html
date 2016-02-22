@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chirper!</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+</head>
+<body>
+
+<div class="container">
+<div class="header">
+  <img src="img/bird.png" class="logo">
+  <h2 class="name">Chirper</h2>
+  <hr>
+</div>
+
+  <div class="content">
+    <h1 class="hook">For when you see some sick clouds and need to tell people.</h1>
+    <button onclick="window.signin();" class="login">Login/Sign up</button>
+  </div>
+</div>
+
+
+<script src="https://cdn.auth0.com/js/lock-8.2.min.js"></script>
+<script type="text/javascript">
+  
+  var lock = new Auth0Lock('M3Iy4EYCRTD7uaGpBCE5nfAXMsCukFAV', 'erikreppel.auth0.com');
+  
+  
+  function signin() {
+    lock.show({
+        callbackURL: '/'
+      , responseType: 'code'
+      , authParams: {
+        scope: 'openid profile'
+      }
+    });
+  }
+</script>
+
+
+</body>
+</html>

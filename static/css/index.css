@@ -1,0 +1,34 @@
+body {
+    background-image: url('../img/clouds.jpeg')
+}
+
+.header {
+    /*background-color: rgba(150, 150, 150, 0.8);*/
+}
+
+.logo {
+    width: 4vw;
+    height: auto;
+    float: left;
+    padding: 2vw;
+}
+
+.hook {
+
+}
+
+.login {
+    background-color: white;
+    position: absolute;
+}
+
+.name {
+    padding-top: 2vw;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+}
+
+.content {
+    text-align: center;
+}

@@ -24,6 +24,9 @@ app.use(session({                       // Used to track user session
 app.use(passport.initialize());         // Used for auth
 app.use(passport.session());            // Used for auth
 
+app.use(express.static('static'));      // serves things in static at the '/' endpoint
+                                        // ex: localhost:3000/css/index.css
+
 
 /*Routes***********************************************************************/
 // The route handler for index
@@ -32,18 +35,25 @@ app.get('/', function(req, res) {
     // the function has request and response (req, res) params
     // req is what the server received, res is what wer are going to send back
 
-    res.sendFile(path.join(__dirname, 'static/index.html'));
+    res.sendFile(path.join(__dirname, 'views/html/index.html'));
+
 });
 
 // route handler for our auth callback
 app.get('/callback',
-    passport.authenticate('auth0', {failureRedirect: '/fail'}),
+    passport.authenticate('auth0', {failureRedirect: '/failure'}),
     function(req, res) {
         if (!req.user) throw new Error('user null');
         else res.redirect('/');
     });
 
 
+// route to handle when logins go wrong
+app.get('/failure', function(req, res) {
+    res.sendFile(path.join(__dirname, 'views/html/failure.html'));
+});
+
+// Start the app
 app.listen(PORT, function() {
     console.log('Listening on port', PORT);
 })
