@@ -26,6 +26,7 @@ app.use(passport.session());            // Used for auth
 
 app.use(express.static('static'));      // serves things in static at the '/' endpoint
                                         // ex: localhost:3000/css/index.css
+app.set('view engine', 'ejs');          // allows us to use ejs
 
 
 /*Routes***********************************************************************/
@@ -35,8 +36,14 @@ app.get('/', function(req, res) {
     // the function has request and response (req, res) params
     // req is what the server received, res is what wer are going to send back
 
-    res.sendFile(path.join(__dirname, 'views/html/index.html'));
+    console.log(req.isAuthenticated());
+    console.log(req.user);
 
+    if (!req.isAuthenticated())
+        res.sendFile(path.join(__dirname, 'views/html/index.html'));
+    else {
+        res.render(path.join(__dirname, 'views/partials/home'));
+    }
 });
 
 // route handler for our auth callback
@@ -47,6 +54,9 @@ app.get('/callback',
         else res.redirect('/');
     });
 
+app.get('/home', function(req, res) {
+    res.render(path.join(__dirname, 'views/partials/home'));
+});
 
 // route to handle when logins go wrong
 app.get('/failure', function(req, res) {
