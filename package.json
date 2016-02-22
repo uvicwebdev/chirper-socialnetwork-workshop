@@ -4,7 +4,11 @@
   "description": "A tutorial for the Uvic webdev club on how to make a simple social network using node",
   "main": "app.js",
   "scripts": {
-  },
+    "start": "node app.js"
+    },
   "author": "Erik Reppel",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
 }
