@@ -1,5 +1,5 @@
 {
-  "name": "social-network-workshop",
+  "name": "chirper-workshop",
   "version": "1.0.0",
   "description": "A tutorial for the Uvic webdev club on how to make a simple social network using node",
   "main": "app.js",
@@ -10,6 +10,7 @@
   "license": "MIT",
   "repository": "https://github.com/uvicwebdev/chirper-workshop",
   "dependencies": {
+    "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",

@@ -1,26 +1,27 @@
-'use strict';
-
 /*Imports**********************************************************************/
-const express = require('express');     // imports the Express library
-const passport = require('passport');   // handles auth0
-const strategy = require('./auth/setup-passport');    // import the stub we made
-const cookieParser = require('cookie-parser');        // a tool to parse cookies
-const session = require('express-session');           // used to track user sessions
-const path = require('path');
+var express = require('express');     // imports the Express library
+var passport = require('passport');   // handles auth0
+var strategy = require('./auth/setup-passport');    // import the stub we made
+var cookieParser = require('cookie-parser');        // a tool to parse cookies
+var session = require('express-session');           // used to track user sessions
+var path = require('path');
 var requiresLogin = require('./auth/requiresLogin')
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
 
 /*Globals**********************************************************************/
 var app = express();                // creates a new Express app
-const PORT = 3000;                  // keep the port we're opening as a global
+var PORT = 3000;                  // keep the port we're opening as a global
 
 
 /*Middlewares******************************************************************/
+app.use(cookieParser());
 app.use(session({                       // Used to track user session
         secret: "ASECRETCODEGOESHERE",
-        resave: false,
-        saveUninitialized: false
+        resave: true,
+        saveUninitialized: true
     }));
+passport.use(strategy);
 app.use(passport.initialize());         // Used for auth
 app.use(passport.session());            // Used for auth
 
@@ -35,12 +36,14 @@ app.get('/', function(req, res) {
     // when a GET request is sent to '/' on our app, we apply a callback function
     // the function has request and response (req, res) params
     // req is what the server received, res is what wer are going to send back
-
+    console.log("hi");
     console.log(req.isAuthenticated());
     console.log(req.user);
 
-    if (!req.isAuthenticated())
+    if (!req.isAuthenticated()) {
+        console.log("hellooooo");
         res.sendFile(path.join(__dirname, 'views/html/index.html'));
+    }
     else {
         res.render(path.join(__dirname, 'views/partials/home'));
     }
@@ -50,11 +53,12 @@ app.get('/', function(req, res) {
 app.get('/callback',
     passport.authenticate('auth0', {failureRedirect: '/failure'}),
     function(req, res) {
+        console.log("auth callback");
         if (!req.user) throw new Error('user null');
-        else res.redirect('/');
+        else res.redirect('/home');
     });
 
-app.get('/home', function(req, res) {
+app.get('/home', requiresLogin, function(req, res) {
     res.render(path.join(__dirname, 'views/partials/home'));
 });
 
