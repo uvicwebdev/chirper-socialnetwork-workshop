@@ -1,18 +1,32 @@
 /*Imports**********************************************************************/
 var express = require('express');     // imports the Express library
+
 var passport = require('passport');   // handles auth0
-var strategy = require('./auth/setup-passport');    // import the stub we made
+var strategy = require('./auth/setup-passport')
+
 var cookieParser = require('cookie-parser');        // a tool to parse cookies
 var session = require('express-session');           // used to track user sessions
 var path = require('path');
 var requiresLogin = require('./auth/requiresLogin')
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
+var passport = require('passport');
+var Auth0Strategy = require('passport-auth0');
+
+
+// This is not a best practice, but we want to keep things simple for now
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 
 /*Globals**********************************************************************/
 var app = express();                // creates a new Express app
 var PORT = 3000;                  // keep the port we're opening as a global
-
 
 /*Middlewares******************************************************************/
 app.use(cookieParser());
@@ -22,6 +36,15 @@ app.use(session({                       // Used to track user session
         saveUninitialized: true
     }));
 passport.use(strategy);
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 app.use(passport.initialize());         // Used for auth
 app.use(passport.session());            // Used for auth
 
@@ -36,16 +59,12 @@ app.get('/', function(req, res) {
     // when a GET request is sent to '/' on our app, we apply a callback function
     // the function has request and response (req, res) params
     // req is what the server received, res is what wer are going to send back
-    console.log("hi");
-    console.log(req.isAuthenticated());
-    console.log(req.user);
 
     if (!req.isAuthenticated()) {
-        console.log("hellooooo");
         res.sendFile(path.join(__dirname, 'views/html/index.html'));
     }
     else {
-        res.render(path.join(__dirname, 'views/partials/home'));
+        res.redirect('/feed');
     }
 });
 
@@ -55,11 +74,11 @@ app.get('/callback',
     function(req, res) {
         console.log("auth callback");
         if (!req.user) throw new Error('user null');
-        else res.redirect('/home');
+        else res.redirect('/feed');
     });
 
-app.get('/home', requiresLogin, function(req, res) {
-    res.render(path.join(__dirname, 'views/partials/home'));
+app.get('/feed', function(req, res) {
+    res.render(path.join(__dirname, 'views/partials/feed'));
 });
 
 // route to handle when logins go wrong
