@@ -10,9 +10,9 @@
   "license": "MIT",
   "repository": "https://github.com/uvicwebdev/chirper-workshop",
   "dependencies": {
-    "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.4.1",
+    "elasticsearch": "^10.1.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "passport": "^0.3.2",

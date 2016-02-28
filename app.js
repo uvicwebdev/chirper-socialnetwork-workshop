@@ -12,21 +12,15 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn()
 
 var passport = require('passport');
 var Auth0Strategy = require('passport-auth0');
-
-
-// This is not a best practice, but we want to keep things simple for now
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-});
+var elasticsearch = require('elasticsearch');
 
 
 /*Globals**********************************************************************/
 var app = express();                // creates a new Express app
 var PORT = 3000;                  // keep the port we're opening as a global
+var client = new elasticsearch.Client({
+    host: 'localhost:9200'
+});
 
 /*Middlewares******************************************************************/
 app.use(cookieParser());
@@ -84,6 +78,11 @@ app.get('/feed', function(req, res) {
 // route to handle when logins go wrong
 app.get('/failure', function(req, res) {
     res.sendFile(path.join(__dirname, 'views/html/failure.html'));
+});
+
+app.post('/chirp', function(req, res) {
+    console.log(req);
+    res.status(200);
 });
 
 // Start the app
