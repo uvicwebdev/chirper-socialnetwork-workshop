@@ -47,6 +47,8 @@ app.set('view engine', 'ejs');          // allows us to render ejs templates
 app.use(bodyParser.urlencoded({ extended: false })); // setting for body parser
 app.use(bodyParser.json())              // for parsing json from post bodies
 
+chirpUtils.initESIndex();
+
 /*Routes***********************************************************************/
 // The route handler for index
 app.get('/', function(req, res) {
@@ -98,15 +100,25 @@ app.get('/user', function(req, res) {
     if (!req.isAuthenticated())
         res.redirect('/');
     else {
-        res.redirect('/user/' + req.user.nickname);
+        res.redirect('/user/' + req.user.nickname + '/1');
     }
 });
 
-app.get('/user/:username', function (req, res) {
+app.get('/user/:username', function(req, res) {
+    if (!req.isAuthenticated())
+        res.redirect('/');
+    else {
+        var username = req.params.username
+        res.redirect('/user/' + username + '/1');
+    }
+});
+
+app.get('/user/:username/:page', function (req, res) {
     if (!req.isAuthenticated())
         res.redirect('/');
     else {
         var username = req.params.username;
+        var page = parseInt(req.params.page);
         chirpUtils.getUserChirps(username, function(err, chirps) {
             res.render(
                 path.join(__dirname, 'views/partials/profile'),
@@ -115,6 +127,7 @@ app.get('/user/:username', function (req, res) {
         });
     }
 });
+
 
 // route to handle when logins go wrong
 app.get('/failure', function(req, res) {

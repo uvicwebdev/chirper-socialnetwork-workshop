@@ -1,5 +1,5 @@
 // Used for interacting with Elasticsearch (we're using ES as a DB)
-var elasticsearch = require('elasticsearch');     // import ES JS client library
+var elasticsearch = require('elasticsearch'); // import ES JS client library
 var escapeHtml = require('./escape')
 
 var client = new elasticsearch.Client({ // define the location of out elasticsearch instance
@@ -24,16 +24,15 @@ function storeChirp(chirp) {
         index: 'chirper',
         type: 'chirp',
         body: chirp
-    }, function (err, res) {
+    }, function(err, res) {
         if (err) {
             console.error(err);
             return 500;
-        }
-        else {
+        } else {
             console.log("Successfully inserted chirp!");
             return 200;
         }
-    })
+    });
 }
 
 function getUserChirps(user, callback) {
@@ -41,10 +40,12 @@ function getUserChirps(user, callback) {
         index: 'chirper',
         type: 'chirp',
         q: 'user:' + user,
-        sort: 'timestamp:desc'
-    }, function (err, res) {
-        if (err) console.error(err);
-        else {
+        sort: 'timestamp:desc',
+    }, function(err, res) {
+        if (err) {
+            console.error(err);
+            console.log("failed here");
+        } else {
             var chirps = [];
             var data = res.hits.hits;
             for (var i in data) {
@@ -65,7 +66,7 @@ function getRecentChirps(callback) {
         index: 'chirper',
         type: 'chirp',
         sort: 'timestamp:desc'
-    }, function (err, res) {
+    }, function(err, res) {
         if (err) console.error(err);
         else {
             var chirps = [];
@@ -83,9 +84,39 @@ function getRecentChirps(callback) {
     });
 }
 
+function initESIndex() {
+    client.search({
+        index: 'chirper',
+        type: 'chirp',
+        sort: 'timestamp:desc'
+    }, function(err, res) {
+        if (err) {
+            client.index({
+                index: 'chirper',
+                type: 'chirp',
+                body: {
+                    text: 'hello world!',
+                    timestamp: new Date(),
+                    user: 'erikreppel',
+                    length: 10
+                }
+            }, function(err, res) {
+                if (err) {
+                    console.error(err);
+                    return 500;
+                } else {
+                    console.log("Successfully inserted chirp!");
+                    return 200;
+                }
+            })
+        }
+    });
+}
+
 module.exports = {
     storeChirp: storeChirp,
     composeChirp: composeChirp,
     getRecentChirps: getRecentChirps,
-    getUserChirps: getUserChirps
+    getUserChirps: getUserChirps,
+    initESIndex: initESIndex
 }
