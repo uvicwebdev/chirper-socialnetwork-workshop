@@ -10,6 +10,7 @@
   "license": "MIT",
   "repository": "https://github.com/uvicwebdev/chirper-workshop",
   "dependencies": {
+    "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.1",
     "ejs": "^2.4.1",
     "elasticsearch": "^10.1.3",
