@@ -12,3 +12,9 @@ Things used:
 - [Express](http://expressjs.com/)
 - [Express sessions](https://github.com/expressjs/session)
 - [ejs](http://www.embeddedjs.com/)
+
+Useful articles:
+- [auth0 hello world](https://auth0.com/docs/server-platforms/nodejs)
+- [Using ejs with express](https://scotch.io/tutorials/use-ejs-to-template-your-node-application)
+- [Elasticsearch JS client](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference-2-2.html)
+- [Server side rendering vs client side rendering](https://medium.com/google-developers/tradeoffs-in-server-side-and-client-side-rendering-14dad8d4ff8b#.680cragy4)
