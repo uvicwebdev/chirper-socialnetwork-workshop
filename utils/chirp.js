@@ -61,6 +61,30 @@ function getUserChirps(user, callback) {
     });
 }
 
+function getPaginatedRecentChirps(page, callback) {
+    client.search({
+        index: 'chirper',
+        type: 'chirp',
+        sort: 'timestamp:desc',
+        from: page * 10
+    }, function(err, res) {
+        if (err) console.error(err);
+        else {
+            var chirps = [];
+            var data = res.hits.hits;
+            for (var i in data) {
+                chirps.push({
+                    text: data[i]._source.text,
+                    user: data[i]._source.user,
+                    timestamp: data[i]._source.timestamp,
+                    length: data[i]._source.length
+                })
+            }
+            callback(err, chirps);
+        }
+    });
+}
+
 function getRecentChirps(callback) {
     client.search({
         index: 'chirper',
@@ -118,5 +142,6 @@ module.exports = {
     composeChirp: composeChirp,
     getRecentChirps: getRecentChirps,
     getUserChirps: getUserChirps,
-    initESIndex: initESIndex
+    initESIndex: initESIndex,
+    getPaginatedRecentChirps: getPaginatedRecentChirps
 }

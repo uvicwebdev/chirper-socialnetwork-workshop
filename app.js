@@ -95,6 +95,21 @@ app.get('/feed', function(req, res) {
     }
 });
 
+app.get('/feed/:page', function (req, res) {
+    if (!req.isAuthenticated())
+        res.redirect('/');
+    else {
+        var username = req.params.username;
+        var page = parseInt(req.params.page);
+        chirpUtils.getPaginatedRecentChirps(page, function(err, chirps) {
+            if (err) console.error(err);
+            else
+                res.send({chirps: chirps})
+        });
+        
+    }
+});
+
 // the route for a users chirps
 app.get('/user', function(req, res) {
     if (!req.isAuthenticated())
@@ -108,17 +123,7 @@ app.get('/user/:username', function(req, res) {
     if (!req.isAuthenticated())
         res.redirect('/');
     else {
-        var username = req.params.username
-        res.redirect('/user/' + username + '/1');
-    }
-});
-
-app.get('/user/:username/:page', function (req, res) {
-    if (!req.isAuthenticated())
-        res.redirect('/');
-    else {
         var username = req.params.username;
-        var page = parseInt(req.params.page);
         chirpUtils.getUserChirps(username, function(err, chirps) {
             res.render(
                 path.join(__dirname, 'views/partials/profile'),

@@ -12,11 +12,12 @@
     <div class="row">
         <textarea class="form-control col-md-8" rows="3" id="chirp"></textarea><button class="btn btn-default" id="chirp-btn">chirp!</button>
     </div>
-    <div class="jumbotron">
+    <div class="jumbotron" id="chirp-holder">
         <% for(var i in chirps) {%>
-            <%= chirps[i].user + ' said on ' %> <%= chirps[i].timestamp%>
+            <%= chirps[i].user + ' ' %> <%= chirps[i].timestamp%>
             <p><%= chirps[i].text %></p>
             <% } %>
+        <button class="btn" id="load-more-chirps">More</button>
     </div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
