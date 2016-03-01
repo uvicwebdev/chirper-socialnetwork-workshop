@@ -14,7 +14,7 @@
     </div>
     <div class="jumbotron" id="chirp-holder">
         <% for(var i in chirps) {%>
-            <%= chirps[i].user + ' ' %> <%= chirps[i].timestamp%>
+            <a href=<%= '/user/' + chirps[i].user %>> <%= chirps[i].user + ' ' %></a> <%= chirps[i].timestamp%>
             <p><%= chirps[i].text %></p>
             <% } %>
         <button class="btn" id="load-more-chirps">More</button>

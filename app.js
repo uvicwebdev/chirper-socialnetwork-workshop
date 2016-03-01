@@ -115,7 +115,7 @@ app.get('/user', function(req, res) {
     if (!req.isAuthenticated())
         res.redirect('/');
     else {
-        res.redirect('/user/' + req.user.nickname + '/1');
+        res.redirect('/user/' + req.user.nickname);
     }
 });
 
