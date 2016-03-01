@@ -79,35 +79,11 @@ app.get('/callback',
 
 // the route for our feed
 app.get('/feed', function(req, res) {
-    if (!req.isAuthenticated())     // want to send unauthed users to home
-        res.redirect('/')
-    else {
-        chirpUtils.getRecentChirps(function(err, chirps) {
-            // lets make things not utc compliant timestamps
-            for (var i in chirps)
-                chirps[i].timestamp = new Date(chirps[i].timestamp).toString();
-            // render the feed template with the most recent chirps
-            res.render(
-                path.join(__dirname, 'views/partials/feed'), 
-                {chirps: chirps}
-            );
-        });
-    }
+   res.send("I dont exist yet!");
 });
 
 app.get('/feed/:page', function (req, res) {
-    if (!req.isAuthenticated())
-        res.redirect('/');
-    else {
-        var username = req.params.username;
-        var page = parseInt(req.params.page);
-        chirpUtils.getPaginatedRecentChirps(page, function(err, chirps) {
-            if (err) console.error(err);
-            else
-                res.send({chirps: chirps})
-        });
-        
-    }
+    res.send("I also dont exist yet!")
 });
 
 // the route for a users chirps
