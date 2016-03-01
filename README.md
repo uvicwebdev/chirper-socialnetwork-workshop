@@ -1,7 +1,7 @@
 Chirper Workshop
 ===
 
-The repo for a workshop on building a twitter clone with MongoDB, Express, and ejs for templating.
+The repo for a workshop on building a twitter clone with Elasticsearch, Express, and ejs for templating.
 
 Things to download/install:
 - [nodejs/NPM](https://nodejs.org/en/)
